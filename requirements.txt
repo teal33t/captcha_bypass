@@ -1,0 +1,4 @@
+numpy==1.18.1
+scipy==1.4.1
+selenium==3.141.0
+urllib3==1.25.8
