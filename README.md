@@ -1,8 +1,10 @@
 # Google ReCaptcha bypass
 
+<video width="" height="" controls>
+  <source src="video.mov" type="video/mp4">
+</video>
 
-https://medium.com/analytics-vidhya/how-to-easily-bypass-recaptchav2-with-selenium-7f7a9a44fa9e
-https://www.loom.com/share/5b02c09d0a1840308c7a4480b9e5010a
+Turotial on medium: https://medium.com/analytics-vidhya/how-to-easily-bypass-recaptchav2-with-selenium-7f7a9a44fa9e
 
 This is simple model for bypassing google captcha using Selenium and Gecko web driver.
 
