@@ -1,4 +1,4 @@
-# Google Captcha Bypasser
+# Google ReCaptcha bypass
 
 This is simple model for bypassing google captcha using Selenium and Gecko web driver.
 
@@ -8,6 +8,6 @@ This is simple model for bypassing google captcha using Selenium and Gecko web d
 
 also [geckodriver](https://github.com/mozilla/geckodriver/releases) should pre-installed on host. 
 
-`python captcha_bypass.py +12134861000`
+`python recaptcha_buster_bypass.py +12134861000`
 
-Tested with http://sync.me.
+Tested for with http://sync.me.

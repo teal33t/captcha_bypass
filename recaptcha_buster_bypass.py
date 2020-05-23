@@ -1,3 +1,6 @@
+# https://github.com/teal33t/captcha_bypass
+# Dont use this code for spy and 
+
 import unittest
 import sys, time
 
@@ -80,7 +83,7 @@ class SyncMe(unittest.TestCase):
     # Setup profile with buster captcha solver
     def setUpProfile(self):
         self.profile = webdriver.FirefoxProfile()
-        self.profile.add_extension("buster_captcha_solver_for_humans-0.6.0.xpi")
+        self.profile._install_extension("buster_captcha_solver_for_humans-0.7.2-an+fx.xpi", unpack=False)
         self.profile.set_preference("security.fileuri.strict_origin_policy", False)
         self.profile.update_preferences()
         
@@ -105,39 +108,30 @@ class SyncMe(unittest.TestCase):
         self.setUpProfile()
         self.setUpOptions()
         self.setUpCapabilities()
-        self.setUpProxy() # comment this line for ignore proxy
-        self.driver = webdriver.Firefox(options=self.options, capabilities=self.capabilities, firefox_profile=self.profile)
+        # self.setUpProxy() # comment this line for ignore proxy
+        self.driver = webdriver.Firefox(options=self.options, capabilities=self.capabilities, firefox_profile=self.profile, executable_path='./geckodriver')
         
+    # Simple logging method
     def log(s,t=None):
             now = datetime.now()
             if t == None :
                     t = "Main"
             print ("%s :: %s -> %s " % (str(now), t, s))
 
+    # Use time.sleep for waiting and uniform for randomizing
     def wait_between(self, a, b):
         rand=uniform(a, b) 
         sleep(rand)
 
-    def is_exists_by_xpath(self, xpath):
-        try:
-                self.driver.find_element_by_xpath(xpath)
-        except NoSuchElementException:
-                return False
-        return True
-
-
     # Using B-spline for simulate humane like mouse movments
     def human_like_mouse_move(self, action, start_element):
-
         points = [[6, 2], [3, 2],[0, 0], [0, 2]];
         points = np.array(points)
         x = points[:,0]
         y = points[:,1]
 
-
         t = range(len(points))
         ipl_t = np.linspace(0.0, len(points) - 1, 100)
-
 
         x_tup = si.splrep(t, x, k=1)
         y_tup = si.splrep(t, y, k=1)
@@ -158,7 +152,7 @@ class SyncMe(unittest.TestCase):
         action.move_to_element(startElement);
         action.perform();
 
-        c = 5
+        c = 5 # change it for more move
         i = 0
         for mouse_x, mouse_y in zip(x_i, y_i):
             action.move_by_offset(mouse_x,mouse_y);
@@ -167,6 +161,80 @@ class SyncMe(unittest.TestCase):
             i += 1    
             if i == c:
                 break;
+
+
+    def do_captcha(self,driver):
+
+        driver.switch_to.default_content()
+        self.log("Switch to new frame")
+        iframes = driver.find_elements_by_tag_name("iframe")
+        driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
+
+        self.log("Wait for recaptcha-anchor")
+        check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID ,"recaptcha-anchor")))
+
+        self.log("Wait")
+        self.wait_between(MIN_RAND, MAX_RAND)  
+
+        action =  ActionChains(driver);
+        self.human_like_mouse_move(action, check_box)
+
+        self.log("Click")
+        check_box.click() 
+    
+        self.log("Wait")
+        self.wait_between(MIN_RAND, MAX_RAND)  
+
+        self.log("Mouse movements")
+        action =  ActionChains(driver);
+        self.human_like_mouse_move(action, check_box)
+
+        self.log("Switch Frame")
+        driver.switch_to.default_content()
+        iframes = driver.find_elements_by_tag_name("iframe")
+        driver.switch_to.frame(iframes[2])
+        
+        self.log("Wait")
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+
+        self.log("Find solver button")
+        capt_btn = WebDriverWait(driver, 50).until(
+                EC.element_to_be_clickable((By.XPATH ,'//button[@id="solver-button"]'))
+                ) 
+
+        self.log("Wait")
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+
+        self.log("Click")
+        capt_btn.click()
+
+        self.log("Wait")
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+
+        try:
+            self.log("Alert exists")
+            alert_handler = WebDriverWait(driver, 20).until(
+                    EC.alert_is_present()
+                    ) 
+            alert = driver.switch_to.alert
+            self.log("Wait before accept alert")
+            self.wait_between(MIN_RAND, MAX_RAND)  
+
+            alert.accept()
+
+            self.wait_between(MIN_RAND, MAX_RAND)  
+            self.log("Alert accepted, retry captcha solver")
+
+            self.do_captcha(driver)
+        except:
+            self.log("No alert")
+            
+
+        self.log("Wait")
+        driver.implicitly_wait(5)
+        self.log("Switch")
+        driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
+
 
     # Main function  
     def test_run(self):
@@ -196,73 +264,9 @@ class SyncMe(unittest.TestCase):
         self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
 
 
-        self.log("Switch to new frame")
-        driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
+        self.do_captcha(driver)
 
-        self.log("Wait for recaptcha-anchor")
-        check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID ,"recaptcha-anchor")))
-
-
-        self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
-
-        action =  ActionChains(driver);
-        self.human_like_mouse_move(action, check_box)
-
-
-        self.log("Click")
-        check_box.click() 
-    
-        self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
-
-        action =  ActionChains(driver);
-        self.human_like_mouse_move(action, check_box)
-
-
-        self.log("Switch")
-        driver.switch_to.default_content()
-        iframes = driver.find_elements_by_tag_name("iframe")
-        driver.switch_to.frame(iframes[1])
-
-        self.log("Wait")
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
-
-        self.log("Find audio button")
-        audio_btn = WebDriverWait(driver, 50).until(
-                EC.element_to_be_clickable((By.XPATH ,'//button[@id="recaptcha-audio-button"]'))
-                ) 
-
-        self.log("Wait")
-        driver.implicitly_wait(10)
-
-        self.log("Click")
-        audio_btn.click()
-
-
-        driver.switch_to.default_content()
-        iframes = driver.find_elements_by_tag_name("iframe")
-        driver.switch_to.frame(iframes[1])
-        
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
-
-        capt_btn = WebDriverWait(driver, 50).until(
-                EC.element_to_be_clickable((By.XPATH ,'//button[@id="solver-button"]'))
-                ) 
-
-        self.log("Wait")
-        driver.implicitly_wait(10)
-        self.log("Click")
-        capt_btn.click()
-
-        self.log("Wait")
-        driver.implicitly_wait(5)
-        self.log("Switch")
-        driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
-
-        self.log("Find data")
-        result = driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[1]/figure/div/div/div[2]/a/p')
-        print (result)
+        self.log("Done")
 
 
     def tearDown(self):
