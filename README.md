@@ -1,6 +1,6 @@
 # Google ReCaptcha bypass
 
-<video width="" height="" controls>
+<video width="640" height="" controls>
   <source src="https://github.com/teal33t/captcha_bypass/raw/master/ReCaptcha%20Bypass%20with%20Selenium%2C%20Geckodriver%20and%20Buster%20Extension.mp4" type="video/mp4">
 </video>
 
