@@ -1,5 +1,5 @@
 # https://github.com/teal33t/captcha_bypass
-# Dont use this code for spy and 
+# Dont use this code for spy and
 
 import unittest
 import sys, time
@@ -19,6 +19,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 
 # Randomization Related
@@ -29,19 +30,19 @@ LONG_MAX_RAND = 11.1
 
 
 # Update this list with proxybroker http://proxybroker.readthedocs.io
-PROXY =[                                                                                                                                                     
+PROXY =[
 {"host": "34.65.217.248", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.15, "error_rate": 0.0},
-{"host": "198.46.160.38", "port": 8080, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.36, "error_rate": 0.0},  
+{"host": "198.46.160.38", "port": 8080, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.36, "error_rate": 0.0},
 {"host": "18.162.100.154", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.62, "error_rate": 0.0},
 {"host": "18.210.69.172", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.22, "error_rate": 0.0},
 {"host": "204.12.202.198", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.3, "error_rate": 0.0},
-{"host": "23.237.100.74", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.32, "error_rate": 0.0}, 
+{"host": "23.237.100.74", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.32, "error_rate": 0.0},
 {"host": "206.189.192.5", "port": 8080, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.63, "error_rate": 0.0},
-{"host": "23.237.173.109", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.4, "error_rate": 0.0}, 
-{"host": "167.71.83.150", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.41, "error_rate": 0.0}, 
-{"host": "34.93.171.222", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.92, "error_rate": 0.0}, 
+{"host": "23.237.173.109", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.4, "error_rate": 0.0},
+{"host": "167.71.83.150", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.41, "error_rate": 0.0},
+{"host": "34.93.171.222", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.92, "error_rate": 0.0},
 {"host": "157.245.67.128", "port": 8080, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.61, "error_rate": 0.0},
-{"host": "18.162.89.135", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.71, "error_rate": 0.0},  
+{"host": "18.162.89.135", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.71, "error_rate": 0.0},
 {"host": "198.98.55.168", "port": 8080, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.65, "error_rate": 0.0},
 {"host": "157.245.124.217", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.7, "error_rate": 0.0},
 {"host": "129.146.181.251", "port": 3128, "geo": {"country": {"code": "US", "name": "United States"}, "region": {"code": "Unknown", "name": "Unknown"}, "city": "Unknown"}, "types": [{"type": "HTTPS", "level": ""}], "avg_resp_time": 0.76, "error_rate": 0.0},
@@ -86,7 +87,7 @@ class SyncMe(unittest.TestCase):
         self.profile._install_extension("buster_captcha_solver_for_humans-0.7.2-an+fx.xpi", unpack=False)
         self.profile.set_preference("security.fileuri.strict_origin_policy", False)
         self.profile.update_preferences()
-        
+
 
     # Enable Marionette, An automation driver for Mozilla's Gecko engine
     def setUpCapabilities(self):
@@ -109,8 +110,13 @@ class SyncMe(unittest.TestCase):
         self.setUpOptions()
         self.setUpCapabilities()
         # self.setUpProxy() # comment this line for ignore proxy
-        self.driver = webdriver.Firefox(options=self.options, capabilities=self.capabilities, firefox_profile=self.profile, executable_path='./geckodriver')
-        
+
+        # On Linux?
+        # https://github.com/mozilla/geckodriver/issues/1756
+        # binary = FirefoxBinary('/usr/lib/firefox-esr/firefox-esr')
+        # self.driver = webdriver.Firefox(options=self.options, capabilities=self.capabilities, firefox_profile=self.profile, executable_path='./geckodriver_linux', firefox_binary=binary)
+        self.driver = webdriver.Firefox(options=self.options, capabilities=self.capabilities, firefox_profile=self.profile, executable_path='./geckodriver_macOS')
+
     # Simple logging method
     def log(s,t=None):
             now = datetime.now()
@@ -120,7 +126,7 @@ class SyncMe(unittest.TestCase):
 
     # Use time.sleep for waiting and uniform for randomizing
     def wait_between(self, a, b):
-        rand=uniform(a, b) 
+        rand=uniform(a, b)
         sleep(rand)
 
     # Using B-spline for simulate humane like mouse movments
@@ -157,8 +163,8 @@ class SyncMe(unittest.TestCase):
         for mouse_x, mouse_y in zip(x_i, y_i):
             action.move_by_offset(mouse_x,mouse_y);
             action.perform();
-            self.log("Move mouse to, %s ,%s" % (mouse_x, mouse_y))   
-            i += 1    
+            self.log("Move mouse to, %s ,%s" % (mouse_x, mouse_y))
+            i += 1
             if i == c:
                 break;
 
@@ -174,16 +180,16 @@ class SyncMe(unittest.TestCase):
         check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID ,"recaptcha-anchor")))
 
         self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
+        self.wait_between(MIN_RAND, MAX_RAND)
 
         action =  ActionChains(driver);
         self.human_like_mouse_move(action, check_box)
 
         self.log("Click")
-        check_box.click() 
-    
+        check_box.click()
+
         self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
+        self.wait_between(MIN_RAND, MAX_RAND)
 
         self.log("Mouse movements")
         action =  ActionChains(driver);
@@ -193,42 +199,42 @@ class SyncMe(unittest.TestCase):
         driver.switch_to.default_content()
         iframes = driver.find_elements_by_tag_name("iframe")
         driver.switch_to.frame(iframes[2])
-        
+
         self.log("Wait")
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)
 
         self.log("Find solver button")
         capt_btn = WebDriverWait(driver, 50).until(
                 EC.element_to_be_clickable((By.XPATH ,'//button[@id="solver-button"]'))
-                ) 
+                )
 
         self.log("Wait")
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)
 
         self.log("Click")
         capt_btn.click()
 
         self.log("Wait")
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)
 
         try:
             self.log("Alert exists")
             alert_handler = WebDriverWait(driver, 20).until(
                     EC.alert_is_present()
-                    ) 
+                    )
             alert = driver.switch_to.alert
             self.log("Wait before accept alert")
-            self.wait_between(MIN_RAND, MAX_RAND)  
+            self.wait_between(MIN_RAND, MAX_RAND)
 
             alert.accept()
 
-            self.wait_between(MIN_RAND, MAX_RAND)  
+            self.wait_between(MIN_RAND, MAX_RAND)
             self.log("Alert accepted, retry captcha solver")
 
             self.do_captcha(driver)
         except:
             self.log("No alert")
-            
+
 
         self.log("Wait")
         driver.implicitly_wait(5)
@@ -236,7 +242,7 @@ class SyncMe(unittest.TestCase):
         driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
 
 
-    # Main function  
+    # Main function
     def test_run(self):
         driver = self.driver
         number = self.number
@@ -246,22 +252,26 @@ class SyncMe(unittest.TestCase):
         self.log("End get")
 
         self.log("Send phone")
-        phone_input = driver.find_element_by_xpath('//*[@id="mobile-number"]')
+
+        # sync.me seems to have moved away from IDs
+        # phone_input = driver.find_element_by_xpath('//*[@id="mobile-number"]')
+        phone_input = driver.find_element_by_xpath('//input[@placeholder="Search any phone number"]')
         phone_input.send_keys(number)
 
         self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
+        self.wait_between(MIN_RAND, MAX_RAND)
 
         search_btn = WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.ID ,"submit"))
-                ) 
+                # EC.presence_of_element_located((By.ID ,"submit"))
+                EC.presence_of_element_located((By.XPATH, '//button[contains(@class, "SearchNumber_searchNumber__find")]'))
+                )
 
         self.log("Wait")
-        self.wait_between(MIN_RAND, MAX_RAND)  
+        self.wait_between(MIN_RAND, MAX_RAND)
         search_btn.click()
 
         self.log("Wait")
-        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)  
+        self.wait_between(LONG_MIN_RAND, LONG_MAX_RAND)
 
 
         self.do_captcha(driver)
@@ -270,7 +280,7 @@ class SyncMe(unittest.TestCase):
 
 
     def tearDown(self):
-        self.wait_between(21.13, 31.05) 
+        self.wait_between(21.13, 31.05)
 
 if __name__ == "__main__":
     if len(sys.argv) > 0:
